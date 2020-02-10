@@ -1,0 +1,201 @@
+from sys import exit
+import shutil,os
+
+class Archivo:
+
+    def __init__( self, nombre ):
+        try:
+            self.f = open( nombre, 'r' )#Lectura del archivo
+            self.nombre = nombre
+        except:
+            print( "No se encontro el archivo", nombre )
+            exit()
+
+    def muestra( self ):#Muestra el archivo de texto
+        i = 0
+        for linea in self.f:
+            print( "{} {}".format( i, linea ),end="" )
+            i+=1
+        self.f.seek( 0 )
+
+#Cuenta Vocales-------------------------------------------
+    def cuentaVocales( self ):
+        def vocales( s ):
+            contador = 0
+            for i in range( len( s ) ):
+                if s[ i ] in set( "aeiouáéíóúAEIOUÁÉÍÓÚ" ):
+                    contador += 1
+            return contador
+        contador = 0
+        for linea in self.f:
+            contador += vocales( linea )
+        self.f.seek( 0 )
+        return contador
+
+#Cuenta Consonantes----------------------------------------
+    def cuentaConsonantes(self):
+        def consonantes(c):
+            contador=0
+            for i in range(len(c)):
+                if c[i] in set ("qwrtypsdfghjklñzxcvbnmQWRTYPSDFGHJKLÑZXCVBNM"):
+                    contador+=1
+            return contador
+        contador=0
+        for linea in self.f:
+            contador+=consonantes(linea)
+        self.f.seek(0)
+        return contador
+
+#Cuenta Signos de Puntuación-------------------------------
+    def cuentaPuntuacion(self):
+        def puntuacion(p):
+            contador=0
+            for i in range(len(p)):
+                if p[i] in set (",.-;:_{}[]¿¡'?\=()/&%$#""!<>"):
+                    contador+=1
+            return contador
+        contador=0
+        for linea in self.f:
+            contador+=puntuacion(linea)
+        self.f.seek(0)
+        return contador
+    
+#Cuenta Espacios-------------------------------------------
+    def cuentaEspacios(self):
+        def espacio(e):
+            contador=0
+            for i in range(len(e)):
+                if e[i] in set (" "):
+                    contador+=1
+            return contador
+        contador=0
+        for linea in self.f:
+            contador+=espacio(linea)
+        self.f.seek(0)
+        return contador
+    
+#Cuenta Palabras-------------------------------------------
+    def cuentaPalabras(self):
+        def palabra(p):
+            contador=0
+            for i in range(len(p)):
+                if p[i] in set (",.;:\n-_' '"):
+                    contador+=1
+            return contador
+        contador=0
+        for linea in self.f:
+            contador+=palabra(linea)
+        self.f.seek(0)
+        return contador
+    
+#Cuenta Lineas---------------------------------------------
+    def cuentaLineas(self):
+        def lineas(l):
+            contador=0
+            for i in range(len(l)):
+                if l[i] in set ("\n"):
+                    contador+=1
+            return contador
+        contador=0
+        for linea in self.f:
+            contador+=lineas(linea)
+        self.f.seek(0)
+        return contador
+
+#Mayúsculas------------------------------------------------
+    def mayusculas(self):
+        def mayus(m):
+            contador=0
+            for i in range(len(m)):
+                if m[i] in set ("QWERTYUIOPASDFGHJKLÑZXCVBNMÁÉÍÓÚ"):
+                    contador+=1
+            return contador
+        contador=0
+        for linea in self.f:
+            contador+=mayus(linea)
+        self.f.seek(0)
+        return contador
+    
+#Minúsculas------------------------------------------------
+    def minusculas(self):
+        def minus(mi):
+            contador=0
+            for i in range(len(mi)):
+                if mi[i] in set ("qwertyuiopasdfghjklñzxcvbnmáéíóú"):
+                    contador+=1
+            return contador
+        contador=0
+        for linea in self.f:
+            contador+=minus(linea)
+        self.f.seek(0)
+        return contador
+            
+#Convierte a mayusculas-------------------------------------
+    def convierteMayuscula( self ):
+        i = 0
+        for linea in self.f:
+            print( "{} {}".format( i, linea.upper()))#Utilice el metodo upper() que convierte una cadena a mayusculas
+        self.f.seek( 0 )
+                       
+#Convierte a minusculas-------------------------------------
+    def convierteMinuscula( self ):
+        i = 0
+        for linea in self.f:
+            print( "{} {}".format( i, linea.lower()))#Utilice el metodo lower() que convierte una cadena a minusculas
+        self.f.seek( 0 )
+        
+#Muestra en hexadecimal-------------------------------------
+    def convierteHexa(self): 
+        for linea in self.f:
+            for texto in linea:   
+                hx = hex(ord(texto))
+                hx = hx[2::]
+                print(hx,end="") #Imprime en hexadecimal
+            print("\n")
+        self.f.seek(0) #Posicionamiento absoluto del archivo    
+
+#Main-------------------------------------------------------
+nomb = input( "Nombre del archivo: ")#Pide nombre del archivo a buscar
+archivo = Archivo( nomb )
+archivo.muestra()#Imprime lo del archivo de texto
+
+c = archivo.cuentaVocales()
+print("\n> Vocales:",c)#Imprime numero de vocales
+
+co=archivo.cuentaConsonantes()
+print("> Consonantes:",co)#Imprime numero de consonantes
+
+pu=archivo.cuentaPuntuacion()
+print("> Signos de puntuación:",pu)#Imprime numero de signos de puntuacion
+
+es=archivo.cuentaEspacios()
+print("> Espacios:",es)#Imprime numero de espacios
+
+pa=archivo.cuentaPalabras()
+print("> Palabras:",pa)#Imprime numero de palabras
+
+li=archivo.cuentaLineas()
+print("> Lineas:",li)#Imprime numero de lineas
+
+may=archivo.mayusculas()
+print("> Mayúsculas:",may)#Imprime numero de mayusculas
+
+minuscula=archivo.minusculas()
+print("> Minúsculas:",minuscula,"\n")#Imprime numero de minusculas
+
+print("----------TEXTO EN MAYUS----------")
+archivo.convierteMayuscula()#Convierte el texto a mayusculas
+print("----------TEXTO EN MINUS----------")
+archivo.convierteMinuscula()#Convierte el texto a minusculas
+print("-----------HEXADECIMAL------------")
+archivo.convierteHexa()#Convierte el texto a hexadecimal
+
+#Copia archivo----------------------------------------------
+ruta = os.getcwd() + os.sep
+origen = ruta + 'test.txt'
+destino = ruta + 'prueba.txt'
+if os.path.exists(origen):
+    with open(origen, 'rb') as forigen:
+        with open(destino, 'wb') as fdestino:
+            shutil.copyfileobj(forigen, fdestino)
+            print("Archivo copiado")
